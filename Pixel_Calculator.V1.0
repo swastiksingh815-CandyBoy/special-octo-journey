@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pixel Style Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#f5f7fb;
+  font-family:'Google Sans', Arial, sans-serif;
+}.calc{ width:360px; background:#ffffff; border-radius:24px; box-shadow:0 20px 40px rgba(0,0,0,.12); padding:16px; }
+
+.header{ font-size:14px; color:#5f6368; margin-bottom:6px; }
+
+.display{ width:100%; height:64px; border:none; outline:none; font-size:28px; text-align:right; color:#202124; background:#f1f3f4; border-radius:16px; padding:12px; margin-bottom:10px; }
+
+.points{ font-size:12px; color:#1a73e8; margin-bottom:10px; }
+
+.history{ background:#f8f9fa; border-radius:12px; padding:8px; font-size:12px; color:#3c4043; height:60px; overflow-y:auto; margin-bottom:10px; }
+
+.converter{ background:#f1f3f4; border-radius:16px; padding:10px; margin-bottom:12px; }
+
+.converter input,.converter select{ width:100%; padding:8px; margin-top:6px; font-size:14px; border:none; border-radius:12px; background:#ffffff; }
+
+.converter button{ margin-top:8px; width:100%; background:#1a73e8; color:#fff; border:none; padding:10px; border-radius:14px; font-size:14px; }
+
+.grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+
+button{ height:52px; border:none; border-radius:16px; font-size:16px; background:#f1f3f4; color:#202124; }
+
+.op{background:#e8f0fe;color:#1a73e8} .eq{background:#1a73e8;color:#fff;grid-column:span 2} .clr{background:#fce8e6;color:#d93025} .mem{background:#e6f4ea;color:#137333} </style>
+
+</head>
+<body>
+<div class="calc">
+  <div class="header">Pixel-style Calculator</div>
+  <input id="display" class="display" disabled />
+  <div id="points" class="points">Points: 0 | Calculations: 0</div>
+  <div id="history" class="history"></div>  <div class="converter">
+    <b>Unit Converter</b>
+    <input id="convValue" placeholder="Enter value" />
+    <select id="convType">
+      <option value="km-m">KM → M</option>
+      <option value="m-km">M → KM</option>
+      <option value="kg-g">KG → G</option>
+      <option value="g-kg">G → KG</option>
+      <option value="c-f">°C → °F</option>
+      <option value="f-c">°F → °C</option>
+    </select>
+    <button onclick="convertUnit()">Convert</button>
+  </div>  <div class="grid">
+    <button class="clr" onclick="clearAll()">C</button>
+    <button class="mem" onclick="mPlus()">M+</button>
+    <button class="mem" onclick="mRecall()">MR</button>
+    <button class="op" onclick="press('/')">÷</button><button onclick="press('7')">7</button>
+<button onclick="press('8')">8</button>
+<button onclick="press('9')">9</button>
+<button class="op" onclick="press('*')">×</button>
+
+<button onclick="press('4')">4</button>
+<button onclick="press('5')">5</button>
+<button onclick="press('6')">6</button>
+<button class="op" onclick="press('-')">−</button>
+
+<button onclick="press('1')">1</button>
+<button onclick="press('2')">2</button>
+<button onclick="press('3')">3</button>
+<button class="op" onclick="press('+')">+</button>
+
+<button onclick="press('0')">0</button>
+<button onclick="press('.')">.</button>
+<button class="eq" onclick="calculate()">=</button>
+
+  </div>
+</div><script>
+const display=document.getElementById('display');
+const historyBox=document.getElementById('history');
+const pointsBox=document.getElementById('points');
+let memory=0,points=0,calculations=0;
+
+function update(){pointsBox.innerText=`Points: ${points} | Calculations: ${calculations}`}
+function reward(){if(calculations===100)alert('Congratulations from the core of Us Creaters')}
+function press(v){display.value+=v}
+function clearAll(){display.value=''}
+function calculate(){try{const e=display.value;const r=eval(e);display.value=r;historyBox.innerHTML+=`${e} = ${r}<br>`;points++;calculations++;update();reward()}catch{display.value='Error'}}
+function mPlus(){memory+=Number(display.value||0)}
+function mRecall(){display.value+=memory}
+function convertUnit(){const v=parseFloat(convValue.value);if(isNaN(v))return;let r=0;switch(convType.value){case'km-m':r=v*1000;break;case'm-km':r=v/1000;break;case'kg-g':r=v*1000;break;case'g-kg':r=v/1000;break;case'c-f':r=v*9/5+32;break;case'f-c':r=(v-32)*5/9;break;}display.value=r;historyBox.innerHTML+=`Converted ${v} → ${r}<br>`;points++;calculations++;update();reward()}
+</script></body>
+</html>
